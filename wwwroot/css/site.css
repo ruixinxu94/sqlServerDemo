@@ -20,3 +20,72 @@ html {
 body {
   margin-bottom: 60px;
 }
+/* Custom Scrollbar styles */
+.overflow-auto::-webkit-scrollbar {
+  height: 8px;
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+ .card {
+   transition: transform .2s; /* Animation for hover effect */
+ }
+
+.card:hover {
+  transform: scale(1.03); /* Slightly enlarges the card on hover */
+}
+
+.card-img-top {
+  border-top-left-radius: .3rem; /* Rounded corners for the top of the image */
+  border-top-right-radius: .3rem; /* Rounded corners for the top of the image */
+}
+
+.card-body {
+  padding: 1rem; /* Spacing inside the card */
+}
+
+/* Other UI improvements */
+body {
+  background-color: #f4f7f6; /* Soft background for the whole page */
+  color: #5a5a5a; /* Mild text color for better readability */
+}
+
+.container {
+  padding-top: 2rem; /* Spacing from the top of the container */
+}
+
+h2 {
+  color: #333; /* Darker color for headings for contrast */
+  margin-bottom: 1rem; /* Spacing after headings */
+}
+
+.btn {
+  margin-right: 0.5rem; /* Spacing between buttons */
+}
+
+/* Table adjustments */
+.table th {
+  background-color: #e9ecef; /* Header background to distinguish from table body */
+  color: #495057; /* Color for the table headers */
+}
+
+.table td {
+  vertical-align: middle; /* Align table content to the middle */
+}
+
+/* Ensure the table images don't stretch */
+.table img {
+  height: auto; /* Maintain aspect ratio */
+  width: 50px; /* Set a fixed width */
+}
+

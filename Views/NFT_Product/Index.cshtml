@@ -4,56 +4,147 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<!-- Container for table -->
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<div class="container mb-5">
+    <h2>Top Collections</h2>
+    <!-- Create New Button -->
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <!-- Table content -->
+    </table>
+</div>
+
+<div class="container mb-5">
+    <h2>Top Collections</h2>
+    <table class="table">
+        <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Rank)
+                Rank
+                <button type="button" id="sort-rank" class="btn btn-sm btn-light">
+                    <i class="bi bi-sort-down"></i>
+                </button>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CollectionName)
+                Collection
+                <!-- If you want to add sorting to the Collection column, add a similar button here -->
+            </th>
+            <th></th> <!-- for images -->
+            <th>
+                Floor Price
+                <button type="button" id="sort-floorprice" class="btn btn-sm btn-light">
+                    <i class="bi bi-sort-down"></i>
+                </button>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrls)
+                Volume
+                <button type="button" id="sort-volume" class="btn btn-sm btn-light">
+                    <i class="bi bi-sort-down"></i>
+                </button>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FloorPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Volume)
-            </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rank)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CollectionName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrls)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FloorPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Volume)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
+        </thead>
+
+
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Rank</td>
+                <td>@item.CollectionName</td>
+                <td>
+                    <img src="@item.ImageUrls" alt="Collection Image" class="img-fluid" style="max-width: 50px;">
+                </td>
+                <td>@item.FloorPrice ETH</td>
+                <td>@item.Volume ETH</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<!-- Container for scrollable card list -->
+<div class="container">
+    <h2>Notable Collections</h2>
+    <div class="row flex-nowrap overflow-auto">
+        @foreach (var item in Model)
+        {
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="card rounded-3 shadow-sm">
+                    <img src="@item.ImageUrls" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.CollectionName</h5>
+                        <p class="card-text">Floor Price: @item.FloorPrice ETH</p>
+                        <p class="card-text">Volume: @item.Volume ETH</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Sorting functions
+            function sortTable(selector, index, asc) {
+                var rows = $(selector).find('tbody tr').get();
+                
+                rows.sort(function(a, b) {
+                    var A = $(a).children('td').eq(index).text();
+                    var B = $(b).children('td').eq(index).text();
+
+                    if($.isNumeric(A) && $.isNumeric(B)) {
+                        return asc ? A - B : B - A;
+                    } else {
+                        var aVal = A.toLowerCase();
+                        var bVal = B.toLowerCase();
+
+                        if(aVal < bVal) {
+                            return asc ? -1 : 1;
+                        }
+                        if(aVal > bVal) {
+                            return asc ? 1 : -1;
+                        }
+                        return 0;
+                    }
+                });
+
+                $.each(rows, function(index, row) {
+                    $(selector).children('tbody').append(row);
+                });
+            }
+
+            // Sorting direction flags
+            var ascRank = true;
+            var ascFloorPrice = true;
+            var ascVolume = true;
+
+            // Attach click handlers to sort buttons
+            $('#sort-rank').on('click', function() {
+                ascRank = !ascRank;
+                sortTable('.table', 0, ascRank);
+            });
+
+            $('#sort-floorprice').on('click', function() {
+                ascFloorPrice = !ascFloorPrice;
+                sortTable('.table', 3, ascFloorPrice);
+            });
+
+            $('#sort-volume').on('click', function() {
+                ascVolume = !ascVolume;
+                sortTable('.table', 4, ascVolume);
+            });
+        });
+    </script>
+
 }
-    </tbody>
-</table>
